@@ -1,0 +1,46 @@
+create table users
+(
+U_ID int not null auto_increment,
+FirstName varchar(255),
+LastName varchar(255),
+Address varchar(255),
+Email varchar(255),
+Mobile varchar(255),
+primary key (U_ID)
+);
+create table areas
+(
+A_ID int not null auto_increment,
+U_ID int not null,
+Name int not null,
+primary key (A_ID),
+constraint fk_areas_U_ID foreign key (U_ID) references users(U_ID)
+);
+create table questions
+(
+Q_ID int not null auto_increment,
+A_ID int not null,
+Difficulty int,
+Chapter int,
+primary key (Q_ID),
+constraint fk_questions_A_ID foreign key (A_ID) references areas(A_ID)
+);
+create table tests
+(
+T_ID int not null auto_increment,
+A_ID int not null,
+U_ID int not null,
+primary key (T_ID),
+constraint fk_tests_A_ID foreign key (A_ID) references areas(A_ID),
+constraint fk_tests_U_ID foreign key (U_ID) references users(U_ID)
+);
+create table images
+(
+I_ID int not null auto_increment,
+Q_ID int not null,
+U_ID int not null,
+Position int,
+primary key (I_ID),
+constraint fk_images_Q_ID foreign key (Q_ID) references questions(Q_ID),
+constraint fk_images_U_ID foreign key (U_ID) references users(U_ID)
+);
