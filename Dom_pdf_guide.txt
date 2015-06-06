@@ -1,0 +1,52 @@
+Cái pdf tao sử dụng là dompdf
+Link Gitgub: https://github.com/barryvdh/laravel-dompdf
+----------------
+File composer.json
+Thêm trong phần require
+"require": {
+		"barryvdh/laravel-dompdf": "0.5.*"
+},
+Sau đó dùng terminal gõ lệnh: composer update
+----------------
+File config/app.php
+Thêm trong phần providers
+'providers' => array(
+    'Barryvdh\DomPDF\ServiceProvider',
+),
+Thêm trong phần aliases
+'aliases' => array(
+    'PDF'       => 'Barryvdh\DomPDF\Facade',
+),
+---------------
+Tạo File resources/views/PrintView.blade.php (xuất cái view này thành pdf)
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Example</title>
+</head>
+<body>
+<h1>Print View!!</h1>
+</body>
+</html>
+---------------
+Tạo File app/Http/Controllers/PrintController.php
+<?php namespace App\Http\Controllers;
+
+use App;
+class PrintController extends Controller
+{
+    public function index()
+    {
+        $pdf = App::make('dompdf');
+        $pdf->loadView('PrintView');
+        return $pdf->stream();// cái này ở chế độ xem trước
+//        return $pdf->download('test.pdf');// cái này là để download
+    }
+}
+--------------
+File app/Http/routes.php
+Thêm dòng dưới
+Route::get('pdf', 'PrintController@index');
+Khi đó khi truy cập localhost:8000/pdf thì nó sẽ preview cái view ở trên thành file pdf
+--------------
+Good Luck!
